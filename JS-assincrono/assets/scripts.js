@@ -1,25 +1,32 @@
-const BASE_URL = 'https://thatcopy.pw/catapi/rest/';
+const BASE_URL = 'https://api.thecatapi.com/v1/images/search'; //Nova API atualizada
 const catBtn = document.getElementById('change-cat');
-const catImg = document.getElementById('cat');
+const getCats = async () => {
 
-const getCats = async() => {
-    try{
-        const data = await fetch(BASE_URL);
-    const json = await data.json();
+    const data = await fetch(BASE_URL, {
 
-    return json.webpurl;
+        mode: 'cors' //Ativar modo cors na configurção do fetch
 
-    }
+    })
 
-    catch(e){
-        console.log(e.message);
-    }
+        .then(res => res.json())
+
+        .then(json => json[0].url) //[0] pega a primeira imagem // .url em vez de .weburl
+
+        .catch(error => console.log(error))
+
+    return data;
+
 };
 
 const loadImg = async () => {
+
+    const catImg = document.getElementById('cat');
+
     catImg.src = await getCats();
-}
+
+};
 
 catBtn.addEventListener('click', loadImg);
 
 loadImg();
+
